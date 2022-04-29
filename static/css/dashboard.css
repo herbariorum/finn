@@ -1,0 +1,32 @@
+#listView {
+    color: #ffffff;
+    background-color: #33373b;
+}
+
+#listView::item {
+    height: 50px;
+}
+
+#listView::item:selected {
+    background-color: #2ABf9E;
+}
+
+
+#lblTextLogo{
+    color: orange;    
+    font-weight: 900;
+    text-indent: 50px;
+}
+
+
+
+#frmTopRight {
+    background-color: rgba(255, 255, 255, .85);
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: 0.25rem;
+}
+
+#lblTopTitle {
+    font-weight: bolder;
+    color: #6c757d;
+}
