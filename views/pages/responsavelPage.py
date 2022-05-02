@@ -34,18 +34,18 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
         dlg = ResponsavelDialog('Edit', id)
         ret = dlg.exec()
         if ret == QDialog.Accepted:
-            print('aceito')
+            print('Editado')
         else:
-            print('rejeitado')
+            print('Cancelado')
 
     
-    def openNewItem(self):
-        pass
-        # dlg = Ui_Dialog(self)
-        # if dlg.exe():
-        #     print('successo')
-        # else:
-        #     print('cancel')
+    def openNewItem(self):        
+        dlg = ResponsavelDialog('New')
+        ret = dlg.exec()
+        if ret == QDialog.Accepted:
+            print('Insere')
+        else:
+            print('Cancelado')
 
     def deleteItem(self):
         pass
@@ -57,7 +57,7 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
         pass
 
     def loadTable(self):
-        colunas = ['ID', 'NOME', 'CPF', 'EMAIL', 'CONTATO(S)']        
+        colunas = ['ID', 'NOME', 'CPF', 'EMAIL']        
         responsavel = responsavelController.selectAll()        
         list_data = []
         for row in responsavel:
@@ -67,7 +67,7 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
                     row.nome,
                     row.cpf,
                     row.email,
-                    row.contato,
+                    # row.contato, # pegar os contatos
                 )
             )        
         self.model = CustomTableModel(list_data, colunas)

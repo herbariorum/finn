@@ -7,6 +7,6 @@ def selectAll():
    
 
 def selectById(id):
-    return
+    return dataset.selectById(Responsavel, id)
     
 

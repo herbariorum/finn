@@ -214,9 +214,9 @@ class Ui_Dialog(object):
         self.lblID.setText("")
         self.label_3.setText(QCoreApplication.translate("Dialog", u"CPF", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"NOME", None))
-        self.label_6.setText(QCoreApplication.translate("Dialog", u"TextLabel", None))
-        self.label_4.setText(QCoreApplication.translate("Dialog", u"Sexo", None))
-        self.label_5.setText(QCoreApplication.translate("Dialog", u"Email", None))
+        self.label_6.setText(QCoreApplication.translate("Dialog", u"RESPONSÁVEL", None))
+        self.label_4.setText(QCoreApplication.translate("Dialog", u"SEXO", None))
+        self.label_5.setText(QCoreApplication.translate("Dialog", u"EMAIL", None))
         self.cbxTipoResponsavel.setItemText(0, QCoreApplication.translate("Dialog", u"PAI", None))
         self.cbxTipoResponsavel.setItemText(1, QCoreApplication.translate("Dialog", u"M\u00c3E", None))
         self.cbxTipoResponsavel.setItemText(2, QCoreApplication.translate("Dialog", u"AV\u00d4", None))
@@ -225,8 +225,8 @@ class Ui_Dialog(object):
         self.cbxTipoResponsavel.setItemText(5, QCoreApplication.translate("Dialog", u"MADASTRA", None))
         self.cbxTipoResponsavel.setItemText(6, QCoreApplication.translate("Dialog", u"OUTROS", None))
 
-        self.cbxSexo.setItemText(0, QCoreApplication.translate("Dialog", u"Masculino", None))
-        self.cbxSexo.setItemText(1, QCoreApplication.translate("Dialog", u"Feminino", None))
+        self.cbxSexo.setItemText(0, QCoreApplication.translate("Dialog", u"MASCULINO", None))
+        self.cbxSexo.setItemText(1, QCoreApplication.translate("Dialog", u"FEMININO", None))
 
         self.label_7.setText(QCoreApplication.translate("Dialog", u"Profiss\u00e3o", None))
         self.label_8.setText(QCoreApplication.translate("Dialog", u"Status", None))
