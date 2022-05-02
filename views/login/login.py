@@ -24,9 +24,21 @@ class Login(QWidget, Ui_Form):
         self.btnVerificar.clicked.connect(self.verificar_login)
         self.btnTitleExit.clicked.connect(self.fechar_janela)
 
+        iconUser = qta.icon("mdi.email-outline")        
+        self.txtUsuario.setClearButtonEnabled(True)
+        self.txtUsuario.addAction(iconUser, QLineEdit.LeadingPosition)
         self.txtUsuario.setPlaceholderText(u"Entre com o email")
+        
+        iconKey = qta.icon("mdi.shield-key-outline")
+        self.txtPassword.setClearButtonEnabled(True)
+        self.txtPassword.addAction(iconKey, QLineEdit.LeadingPosition)
+        self.txtPassword.setPlaceholderText(u"Entre com a senha")
+
         iconLogo = qta.icon('fa.user-circle', color='black')
         self.label.setPixmap(iconLogo.pixmap(QSize(128, 128)))
+
+        iconCheck = qta.icon("fa.check", color="green")
+        self.btnVerificar.setIcon(iconCheck)
 
         self.tentativas = 0
 

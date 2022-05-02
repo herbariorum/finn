@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt, QAbstractTableModel
 from PySide6.QtGui import QColor
-from datetime import date
+from datetime import date, datetime
+import qtawesome as qta
 
 class CustomTableModel(QAbstractTableModel):
     def __init__(self, data, headers, parent=None):
@@ -30,12 +31,26 @@ class CustomTableModel(QAbstractTableModel):
         if not index.isValid():
             return None
         if role == Qt.DisplayRole:
-            return '{0}'.format(self._items[row][col])
-        elif role == Qt.TextAlignmentRole:
-            return Qt.AlignRight
+            value = self._items[row][col]
+            if isinstance(value, datetime):
+                return value.strftime("%d/%m/%Y")
+            if isinstance(value, str):
+                return '{0}'.format(self._items[row][col])
+            return value
+        elif role == Qt.TextAlignmentRole:   
+            if col == 0 or col == 1:         
+                return (Qt.AlignLeft + Qt.AlignVCenter)            
+            return (Qt.AlignCenter + Qt.AlignHCenter)
         elif role == Qt.BackgroundRole:
             return QColor(Qt.white)
+        elif role == Qt.DecorationRole:
+            value = self._items[row][col]
+            if isinstance(value, date):
+                return qta.icon('ei.calendar', color='black')
+            if col == 0:
+                return qta.icon('fa.id-card-o', color='#fa7610')
         return None        
 
     def flags(self, index):
-        return Qt.ItemIsEnabled
+        return Qt.ItemIsEnabled | Qt.ItemIsSelectable
+        

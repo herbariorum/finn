@@ -60,6 +60,7 @@ class Ui_formResponsavel(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.tblListagem = QTableView(self.frmTabela)
         self.tblListagem.setObjectName(u"tblListagem")
+        
 
         self.verticalLayout_2.addWidget(self.tblListagem)
 
