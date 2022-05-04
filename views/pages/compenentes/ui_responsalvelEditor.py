@@ -130,7 +130,7 @@ class Ui_Dialog(object):
         self.frame_4 = QFrame(self.frame)
         self.frame_4.setObjectName(u"frame_4")
         self.frame_4.setMinimumSize(QSize(0, 0))
-        self.frame_4.setMaximumSize(QSize(16777215, 150))
+        self.frame_4.setMaximumSize(QSize(16777215, 170))
         self.frame_4.setFrameShape(QFrame.StyledPanel)
         self.frame_4.setFrameShadow(QFrame.Raised)
         self.gridLayout_3 = QGridLayout(self.frame_4)
@@ -160,19 +160,23 @@ class Ui_Dialog(object):
 
         self.gridLayout_3.addWidget(self.label_9, 2, 0, 1, 1)
 
-        self.lblEndereco = QLabel(self.frame_4)
-        self.lblEndereco.setObjectName(u"lblEndereco")
+        self.txtEndereco = QLineEdit(self.frame_4)
+        self.txtEndereco.setObjectName(u"txtEndereco")
 
-        self.gridLayout_3.addWidget(self.lblEndereco, 3, 0, 1, 2)
+        self.gridLayout_3.addWidget(self.txtEndereco, 3, 0, 1, 3)
 
-        self.lblContato = QLabel(self.frame_4)
-        self.lblContato.setObjectName(u"lblContato")
+        self.label_10 = QLabel(self.frame_4)
+        self.label_10.setObjectName(u"label_10")
 
-        self.gridLayout_3.addWidget(self.lblContato, 4, 0, 1, 2)
+        self.gridLayout_3.addWidget(self.label_10, 4, 0, 1, 1)
+
+        self.txtContato = QLineEdit(self.frame_4)
+        self.txtContato.setObjectName(u"txtContato")
+
+        self.gridLayout_3.addWidget(self.txtContato, 5, 0, 1, 3)
 
 
         self.verticalLayout_2.addWidget(self.frame_4)
-
 
         self.verticalLayout.addWidget(self.frame)
 
@@ -186,8 +190,9 @@ class Ui_Dialog(object):
 
 
         self.retranslateUi(Dialog)
-        self.buttonBox.accepted.connect(Dialog.accept)
+        # self.buttonBox.accepted.connect(Dialog.accept)
         self.buttonBox.rejected.connect(Dialog.reject)
+        # self.buttonBox.accepted.connect(self.salvarRegistros)
 
         QMetaObject.connectSlotsByName(Dialog)
     # setupUi
@@ -204,7 +209,7 @@ class Ui_Dialog(object):
         self.lblID.setText("")
         self.label_3.setText(QCoreApplication.translate("Dialog", u"CPF", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"NOME", None))
-        self.label_6.setText(QCoreApplication.translate("Dialog", u"TextLabel", None))
+        self.label_6.setText(QCoreApplication.translate("Dialog", u"Responsável", None))
         self.label_4.setText(QCoreApplication.translate("Dialog", u"Sexo", None))
         self.label_5.setText(QCoreApplication.translate("Dialog", u"Email", None))
         self.cbxTipoResponsavel.setItemText(0, QCoreApplication.translate("Dialog", u"PAI", None))
@@ -228,7 +233,7 @@ class Ui_Dialog(object):
 #endif // QT_CONFIG(tooltip)
         self.chbAtivo.setText(QCoreApplication.translate("Dialog", u"Ativo", None))
         self.label_9.setText(QCoreApplication.translate("Dialog", u"Endere\u00e7o(s)", None))
-        self.lblEndereco.setText(QCoreApplication.translate("Dialog", u"TextLabel", None))
-        self.lblContato.setText(QCoreApplication.translate("Dialog", u"TextLabel", None))
-    # retranslateUi
-
+        self.label_10.setText(QCoreApplication.translate("Dialog", u"Contato(s)", None))
+        # self.txtEndereco.setText(QCoreApplication.translate("Dialog", u"TextLabel", None))
+        # self.txtContato.setText(QCoreApplication.translate("Dialog", u"TextLabel", None))
+  

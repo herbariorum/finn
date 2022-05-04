@@ -46,7 +46,7 @@ class Login(QWidget, Ui_Form):
         global logou
         usuario = self.txtUsuario.text()
         password = self.txtPassword.text()
-        if not Uteis.is_not_blank(usuario) or not Uteis.check(usuario):
+        if not Uteis.is_not_blank(usuario) or not Uteis.check_email(usuario):
             QMessageBox.about(self, 'Aviso', 'Digite um email válido')
             self.txtUsuario.setFocus()
             return

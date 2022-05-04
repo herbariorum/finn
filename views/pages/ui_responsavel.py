@@ -83,6 +83,11 @@ class Ui_formResponsavel(object):
 
         self.horizontalLayout.addWidget(self.btnNovo)
 
+        self.btnEdit = QPushButton(self.frmButton)
+        self.btnEdit.setObjectName(u"btnEdit")
+
+        self.horizontalLayout.addWidget(self.btnEdit)
+
         self.btnDelete = QPushButton(self.frmButton)
         self.btnDelete.setObjectName(u"btnDelete")
 
@@ -111,8 +116,13 @@ class Ui_formResponsavel(object):
         formResponsavel.setWindowTitle(QCoreApplication.translate("formResponsavel", u"Form", None))
         self.label.setText(QCoreApplication.translate("formResponsavel", u"Localizar", None))
         self.btnNovo.setText(QCoreApplication.translate("formResponsavel", u"Insere Novo", None))
+        self.btnEdit.setText(QCoreApplication.translate("formResponsavel", u"Edita", None))
         self.btnDelete.setText(QCoreApplication.translate("formResponsavel", u"Apaga", None))
         self.btnSelecao.setText(QCoreApplication.translate("formResponsavel", u"Imprime sele\u00e7\u00e3o", None))
         self.btnListagem.setText(QCoreApplication.translate("formResponsavel", u"Imprime listagem", None))
     # retranslateUi
+
+    # def refresh(self):
+    #     self.setupUi(self)
+    #     self.retranslateUi(self)
 

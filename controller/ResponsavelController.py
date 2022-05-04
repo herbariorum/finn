@@ -11,5 +11,16 @@ def selectById(id):
 
 def search(texto):
     return dataset.search(Responsavel, texto)
-    
+
+def verificaCPFExiste(cpf):
+    return dataset.findByCpf(Responsavel, cpf)
+
+def insert(registros):
+    return dataset.create(Responsavel, registros)
+
+def update(registros):
+    return dataset.update(Responsavel, registros)
+
+def delete(id):
+    return dataset.delete(Responsavel, id)
 

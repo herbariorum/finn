@@ -8,11 +8,13 @@ import controller.ResponsavelController as responsavelController
 
 from views.pages.compenentes.formResponsavel import ResponsavelDialog
 
+
 class ResponsavelPage(QWidget, Ui_formResponsavel):
     def __init__(self):
         super().__init__()
 
         self.setupUi(self)
+        
         retorno = responsavelController.selectAll()  
         self.loadTable(retorno)
 
@@ -21,6 +23,8 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
         self.txtLocalizar.textChanged.connect(self.localizarItem)
         self.btnNovo.clicked.connect(self.openNewItem)
         self.btnNovo.setIcon(qta.icon('msc.new-file', color='black'))
+        self.btnEdit.clicked.connect(self.openEditTable)
+        self.btnEdit.setIcon(qta.icon('ei.file-edit', color='black'))
         self.btnDelete.clicked.connect(self.deleteItem)
         self.btnDelete.setIcon(qta.icon('mdi.delete', color='black'))
         self.btnSelecao.clicked.connect(self.imprimeSelecao)
@@ -33,28 +37,54 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
         self.loadTable(retorno)
 
 
-    def openEditTable(self):        
-        index = self.tblListagem.selectedIndexes()[0]
-        id = int(self.tblListagem.model().data(index)) # pego o valor da primeira coluna, no caso o id
-        # chama o dialog de edicao
-        dlg = ResponsavelDialog('Edit', id)
-        ret = dlg.exec()
-        if ret == QDialog.Accepted:
-            print('Editado')
-        else:
-            print('Cancelado')
+    def openEditTable(self):  
+        indexes = self.tblListagem.selectionModel().selectedRows()
+        if not indexes:
+            QMessageBox.about(self, 'Aviso', 'Selecione um item na tabela')
+            return
+        else:            
+            index = self.tblListagem.selectedIndexes()[0]        
+            id = int(self.tblListagem.model().data(index)) # pego o valor da primeira coluna, no caso o id
+            # chama o dialog de edicao
+            dlg = ResponsavelDialog('Edit', id)
+            
+            ret = dlg.exec()
+            if ret == QDialog.Accepted:  
+                retorno = responsavelController.selectAll()                
+                self.loadTable(retorno)         
+            else:
+                pass
 
     
     def openNewItem(self):        
         dlg = ResponsavelDialog('New')
         ret = dlg.exec()
         if ret == QDialog.Accepted:
-            print('Insere')
+            retorno = responsavelController.selectAll()                
+            self.loadTable(retorno) 
         else:
-            print('Cancelado')
+            pass
 
     def deleteItem(self):
-        pass
+        indexes = self.tblListagem.selectionModel().selectedRows()
+        if not indexes:
+            QMessageBox.about(self, 'Aviso', 'Selecione o item a ser apagado')
+            return
+        else:  
+            index = self.tblListagem.selectedIndexes()[0]        
+            id = int(self.tblListagem.model().data(index))
+            msg = QMessageBox.question(self, 'Apagar Registro', 'Você tem certeza que deseja apagar o registro \n de ID {}'.format(id), QMessageBox.Ok | QMessageBox.Cancel)
+            if QMessageBox.Ok:
+                ret = responsavelController.delete(id)
+                if ret == 1:
+                    QMessageBox.about(self, 'Sucesso', 'Registro apagado com sucesso.')
+                    retorno = responsavelController.selectAll()                
+                    self.loadTable(retorno) 
+                else:
+                    QMessageBox.warning(self, 'Erro', str(ret), QMessageBox.Ok)
+                    return
+            else:
+                return 
 
     def imprimeSelecao(self):
         pass
@@ -63,8 +93,8 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
         pass
 
     def loadTable(self, dados):
-        colunas = ['ID', 'NOME', 'CPF', 'EMAIL', 'CONTATO(S)']        
-       
+        colunas = ['ID', 'NOME', 'CPF', 'EMAIL', 'CONTATO(S)']     
+         
         list_data = []
         for row in dados:
             list_data.append(
@@ -88,7 +118,7 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
         self.tblListagem.horizontalHeader().setStretchLastSection(True)
         self.tblListagem.verticalHeader().hide()
         
-        self.tblListagem.doubleClicked.connect(self.openEditTable)
+        # self.tblListagem.doubleClicked.connect(self.openEditTable)
     
 
         self.tblListagem.setColumnWidth(0, 50)
@@ -96,4 +126,4 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
         self.tblListagem.setColumnWidth(2, 150)
         self.tblListagem.setColumnWidth(3, 250)
         self.tblListagem.setColumnWidth(3, 200)
-        
+    
