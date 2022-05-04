@@ -19,24 +19,22 @@ class ResponsavelDialog(QDialog):
             
     
     def preencheForm(self):
-        retorno = responsavelController.selectById(self.IdToEdit)
-        for row in retorno:
-            self.ui.lblID.setText(str(row.id))
-            self.ui.txtNome.setText(row.nome)
-            self.ui.txtCPF.setText(row.cpf)
-            self.ui.txtEmail.setText(row.email)
-            self.ui.cbxSexo.setCurrentText(row.sexo)
-           
-            self.ui.cbxTipoResponsavel.setCurrentText(row.tipo_responsavel)
-            self.ui.txtProfissao.setText(row.profissao)
+        row = responsavelController.selectById(self.IdToEdit)        
+        self.ui.lblID.setText(str(row.id))
+        self.ui.txtNome.setText(row.nome)
+        self.ui.txtCPF.setText(row.cpf)
+        self.ui.txtEmail.setText(row.email)
+        self.ui.cbxSexo.setCurrentText(row.sexo)           
+        self.ui.cbxTipoResponsavel.setCurrentText(row.tipo_responsavel)
+        self.ui.txtProfissao.setText(row.profissao)
             #busca os endereços cadastrados de acordo com o ID
-            self.ui.lblEndereco.setText('Rua são martins')
+        self.ui.lblEndereco.setText(row.endereco)
             #busca os contatos cadastrados para o id
-            self.ui.lblContato.setText('63 99933-3333')
-            if row.status == 0:
-                self.ui.chbAtivo.setChecked(True)
-            elif row.status == 1:
-                self.ui.chbAtivo.setChecked(False)
+        self.ui.lblContato.setText(row.contatos)
+        if row.status == 0:
+            self.ui.chbAtivo.setChecked(True)
+        elif row.status == 1:
+            self.ui.chbAtivo.setChecked(False)
 
     
     def newForm(self):

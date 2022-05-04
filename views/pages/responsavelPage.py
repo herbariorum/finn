@@ -13,11 +13,12 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
         super().__init__()
 
         self.setupUi(self)
-
-        self.loadTable()
+        retorno = responsavelController.selectAll()  
+        self.loadTable(retorno)
 
         self.txtLocalizar.setClearButtonEnabled(True)
         self.txtLocalizar.addAction(qta.icon('fa.search'), QLineEdit.LeadingPosition)
+        self.txtLocalizar.textChanged.connect(self.localizarItem)
         self.btnNovo.clicked.connect(self.openNewItem)
         self.btnNovo.setIcon(qta.icon('msc.new-file', color='black'))
         self.btnDelete.clicked.connect(self.deleteItem)
@@ -26,6 +27,11 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
         self.btnSelecao.setIcon(qta.icon('fa.print', color='black'))
         self.btnListagem.clicked.connect(self.imprimeTudo)
         self.btnListagem.setIcon(qta.icon('fa.print', color='black'))
+
+    def localizarItem(self):
+        retorno = responsavelController.search(self.txtLocalizar.text())
+        self.loadTable(retorno)
+
 
     def openEditTable(self):        
         index = self.tblListagem.selectedIndexes()[0]
@@ -56,18 +62,18 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
     def imprimeTudo(self):
         pass
 
-    def loadTable(self):
-        colunas = ['ID', 'NOME', 'CPF', 'EMAIL']        
-        responsavel = responsavelController.selectAll()        
+    def loadTable(self, dados):
+        colunas = ['ID', 'NOME', 'CPF', 'EMAIL', 'CONTATO(S)']        
+       
         list_data = []
-        for row in responsavel:
+        for row in dados:
             list_data.append(
                 (
                     row.id,
                     row.nome,
                     row.cpf,
                     row.email,
-                    # row.contato, # pegar os contatos
+                    row.contatos, # pegar os contatos
                 )
             )        
         self.model = CustomTableModel(list_data, colunas)

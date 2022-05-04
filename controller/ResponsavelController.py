@@ -8,5 +8,8 @@ def selectAll():
 
 def selectById(id):
     return dataset.selectById(Responsavel, id)
+
+def search(texto):
+    return dataset.search(Responsavel, texto)
     
 

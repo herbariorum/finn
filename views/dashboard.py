@@ -93,13 +93,13 @@ def executa():
         app = QApplication.instance()        
         if app is None:            
             app = QApplication(sys.argv)
-    
+
         with open('static/css/dashboard.css', 'r') as f:
             style = f.read()
             app.setStyleSheet(style)
         
         janela = MainWindow()
-        janela.show()
+        janela.show()        
         app.exec()
     except NameError:
         print("Name Error: ", sys.exc_info()[1])

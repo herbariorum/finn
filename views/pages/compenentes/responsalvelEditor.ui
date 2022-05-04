@@ -274,24 +274,10 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="2">
-          <widget class="QPushButton" name="btnCadEndereco">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
          <item row="4" column="0" colspan="2">
           <widget class="QLabel" name="lblContato">
            <property name="text">
             <string>TextLabel</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="2">
-          <widget class="QPushButton" name="btnCadContato">
-           <property name="text">
-            <string/>
            </property>
           </widget>
          </item>

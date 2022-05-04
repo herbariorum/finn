@@ -12,8 +12,8 @@ class Responsavel(BaseModel):
     email = CharField()
     tipo_responsavel = CharField()
     profissao = CharField(max_length=100)
-    # contato = IntegerField() # onetomany
-    endereco = IntegerField() # onetoone
+    contatos = CharField()
+    endereco = CharField()
     status = IntegerField(default = 0)
     criadoem = DateField(default=datetime.date.today())
-    atualizadoem = DateField(default=datetime.date.today)
+    atualizadoem = DateField()

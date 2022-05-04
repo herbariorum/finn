@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'responsalvelEditorRhiapY.ui'
+## Form generated from reading UI file 'responsalvelEditorlxUYOp.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.4
 ##
@@ -17,8 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QCheckBox, QComboBox,
     QDialog, QDialogButtonBox, QFrame, QGridLayout,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QVBoxLayout, QWidget)
+    QLabel, QLineEdit, QSizePolicy, QVBoxLayout,
+    QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -165,20 +165,10 @@ class Ui_Dialog(object):
 
         self.gridLayout_3.addWidget(self.lblEndereco, 3, 0, 1, 2)
 
-        self.btnCadEndereco = QPushButton(self.frame_4)
-        self.btnCadEndereco.setObjectName(u"btnCadEndereco")
-
-        self.gridLayout_3.addWidget(self.btnCadEndereco, 3, 2, 1, 1)
-
         self.lblContato = QLabel(self.frame_4)
         self.lblContato.setObjectName(u"lblContato")
 
         self.gridLayout_3.addWidget(self.lblContato, 4, 0, 1, 2)
-
-        self.btnCadContato = QPushButton(self.frame_4)
-        self.btnCadContato.setObjectName(u"btnCadContato")
-
-        self.gridLayout_3.addWidget(self.btnCadContato, 4, 2, 1, 1)
 
 
         self.verticalLayout_2.addWidget(self.frame_4)
@@ -214,9 +204,9 @@ class Ui_Dialog(object):
         self.lblID.setText("")
         self.label_3.setText(QCoreApplication.translate("Dialog", u"CPF", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"NOME", None))
-        self.label_6.setText(QCoreApplication.translate("Dialog", u"RESPONSÁVEL", None))
-        self.label_4.setText(QCoreApplication.translate("Dialog", u"SEXO", None))
-        self.label_5.setText(QCoreApplication.translate("Dialog", u"EMAIL", None))
+        self.label_6.setText(QCoreApplication.translate("Dialog", u"TextLabel", None))
+        self.label_4.setText(QCoreApplication.translate("Dialog", u"Sexo", None))
+        self.label_5.setText(QCoreApplication.translate("Dialog", u"Email", None))
         self.cbxTipoResponsavel.setItemText(0, QCoreApplication.translate("Dialog", u"PAI", None))
         self.cbxTipoResponsavel.setItemText(1, QCoreApplication.translate("Dialog", u"M\u00c3E", None))
         self.cbxTipoResponsavel.setItemText(2, QCoreApplication.translate("Dialog", u"AV\u00d4", None))
@@ -239,8 +229,6 @@ class Ui_Dialog(object):
         self.chbAtivo.setText(QCoreApplication.translate("Dialog", u"Ativo", None))
         self.label_9.setText(QCoreApplication.translate("Dialog", u"Endere\u00e7o(s)", None))
         self.lblEndereco.setText(QCoreApplication.translate("Dialog", u"TextLabel", None))
-        self.btnCadEndereco.setText("")
         self.lblContato.setText(QCoreApplication.translate("Dialog", u"TextLabel", None))
-        self.btnCadContato.setText("")
     # retranslateUi
 
