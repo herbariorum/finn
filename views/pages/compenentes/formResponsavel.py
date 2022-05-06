@@ -23,6 +23,8 @@ class ResponsavelDialog(QDialog):
         
         self.ui.buttonBox.accepted.connect(self.verificarRegistros)
         self.ui.txtCPF.setInputMask('999.999.999-99')
+        self.ui.txtContato.setInputMask('(99)99999-9999')
+        self.ui.txtContato.setToolTip('Insira um telefone para contato. \nEx. (63)00202-20202')
             
     def verificarRegistros(self):
         id = self.ui.lblID.text()
@@ -71,7 +73,7 @@ class ResponsavelDialog(QDialog):
         values['email'] = email
         values['tipo_responsavel'] = responsavel
         values['profissao'] = profissao
-        values['contatos'] = contato
+        values['contatos'] = Uteis.is_only_number(contato)
         values['endereco'] = endereco
         values['status'] = status
    
