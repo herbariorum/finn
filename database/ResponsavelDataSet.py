@@ -49,3 +49,7 @@ class ResponsavelDataSet:
             return e
         else:
             return row
+
+    @staticmethod
+    def selectPerPage(model, page, number_for_page):
+        return model.select().order_by(model.nome).paginate(page, number_for_page)

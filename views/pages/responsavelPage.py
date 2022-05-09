@@ -8,18 +8,23 @@ import controller.ResponsavelController as responsavelController
 
 from views.pages.compenentes.formResponsavel import ResponsavelDialog
 
+from reportlab.pdfgen.canvas import Canvas
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
-from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
+from reportlab.lib import colors
+
+from views.pages.reporter.header import getHeaderTable
+from views.pages.reporter.footer import getFooterPage
+from views.pages.reporter.table import getBodyTable
 
 
 from pathlib import Path
 import os
 from sys import platform
-import time
+from datetime import date
 
 
 class ResponsavelPage(QWidget, Ui_formResponsavel):
@@ -183,7 +188,61 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
                 return
 
     def imprimeTudo(self):
-        pass
+        item, ok = QInputDialog.getInt(self, 'Impressão', 'Informe o número da página a ser impressa', 0, False)
+        if ok:
+            num_page = item
+        else:
+            num_page = 0
+        
+        data = date.today()
+        data.strftime("%Y-%m-%d")
+        doc_name = 'relatorio_' + str(data)+'_page_'+str(num_page) +'.pdf'          
+            
+        if platform == "linux" or platform == "linux2":                
+            path_dir = Path.home() / 'Documentos'
+            save_name = os.path.join(path_dir, doc_name)
+        elif platform == "win32" or platform == "win64":
+            path_dir = Path.home() / 'Documents'
+            save_name = os.path.join(path_dir, doc_name)           
+        try:             
+            table_style = TableStyle([
+                # ('TOPPADDING', (0, 1), (-1, -1), 20),
+                ('LEFTPADDING', (0, 0), (0, 2), 0),
+                ('RIGHTPADDING', (0, 0), (0, 2), 0),
+                ('BOTTOMPADDING', (0, 0), (-1,-1), 0),
+                ('VALIGN', (0, 1), (-1, -1), 'TOP'),
+                ('ALIGNMENT', (0, 1), (-1,-1), 'CENTER')
+            ])
+          
+            pdf = Canvas(save_name, pagesize=A4)
+            pdf.setTitle('Relatório')
+            width, height = A4 #A4 = (210*mm,297*mm) w e h
+            
+            heightList = [
+                height * 20 / 100,
+                height * 77 / 100,
+                height * 3 / 100,
+            ]
+            
+            mainTable = Table([
+                [getHeaderTable(width, heightList[0])],
+                [getBodyTable(num_page, width)],
+                [getFooterPage(width, heightList[2])],                
+            ],
+                colWidths= width,
+                rowHeights= heightList 
+            )
+
+            mainTable.setStyle(table_style)
+
+            mainTable.wrapOn(pdf, 0, 0)
+            mainTable.drawOn(pdf, 0, 0)
+
+            pdf.showPage()
+            pdf.save()
+        except Exception as e:
+            QMessageBox.warning(self, 'Erro', str(e), QMessageBox.Ok)
+            return
 
     def loadTable(self, dados):
         colunas = ['ID', 'NOME', 'CPF', 'EMAIL', 'CONTATO(S)']     

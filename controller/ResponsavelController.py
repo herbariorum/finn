@@ -24,3 +24,6 @@ def update(registros):
 def delete(id):
     return dataset.delete(Responsavel, id)
 
+def selectForPage(page, number_for_page):
+    return dataset.selectPerPage(Responsavel, page, number_for_page)
+
