@@ -7,6 +7,7 @@ import datetime
 class Responsavel(BaseModel):
     id = AutoField()
     nome = CharField(max_length=80)
+    photo = CharField()
     cpf = CharField(max_length=11, unique=True)
     sexo = CharField(max_length=1)
     email = CharField()

@@ -7,6 +7,7 @@ from modelos.CustomTableModel import CustomTableModel
 import controller.ResponsavelController as responsavelController
 
 from views.pages.compenentes.formResponsavel import ResponsavelDialog
+from views.pages.compenentes.viewResponsavel import ViewResponsavelDialog
 
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
@@ -49,11 +50,18 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
         self.btnSelecao.setIcon(qta.icon('fa.print', color='black'))
         self.btnListagem.clicked.connect(self.imprimeTudo)
         self.btnListagem.setIcon(qta.icon('fa.print', color='black'))
+        self.tblListagem.doubleClicked.connect(self.exibeItem)
 
     def localizarItem(self):
         retorno = responsavelController.search(self.txtLocalizar.text())
         self.loadTable(retorno)
 
+
+    def exibeItem(self):
+        index = self.tblListagem.selectedIndexes()[0]  
+        id = int(self.tblListagem.model().data(index)) 
+        dlg = ViewResponsavelDialog(id)
+        dlg.exec()        
 
     def openEditTable(self):  
         indexes = self.tblListagem.selectionModel().selectedRows()
