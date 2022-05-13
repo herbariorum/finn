@@ -2,7 +2,7 @@ from qt_core import *
 
 import controller.ResponsavelController as responsavelController
 from views.pages.compenentes.ui_responsavelView import Ui_Dialog
-
+import os
 
 class ViewResponsavelDialog(QDialog):
     def __init__(self, id):
@@ -16,6 +16,11 @@ class ViewResponsavelDialog(QDialog):
         self.carregaForm()
         self.estilizar()
         self.ui.pushButton.clicked.connect(self.sair)
+        self.ui.infoFoto.setFrameShape(QFrame.NoFrame)
+        self.ui.infoFoto.setFrameShadow(QFrame.Raised)
+        self.ui.frame.setFrameShape(QFrame.NoFrame)
+        self.ui.frame.setFrameShadow(QFrame.Raised)
+        
 
     
     def sair(self):
@@ -63,6 +68,12 @@ class ViewResponsavelDialog(QDialog):
     def carregaForm(self):
         row = responsavelController.selectById(self.rowID)
 
+        if row.photo:
+            path_base = os.getcwd()        
+            foto = os.path.join(path_base+'/' , row.photo)        
+           
+            self.foto_icon = QIcon(foto)
+            self.ui.lblFoto.setPixmap(self.foto_icon.pixmap(QSize(64, 64)))
         self.ui.infoNome.setText(row.nome)
         self.ui.infoContato.setText(row.contatos)
         self.ui.infoCPF.setText(row.cpf)

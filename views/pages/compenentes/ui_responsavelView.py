@@ -37,8 +37,14 @@ class Ui_Dialog(object):
         self.infoFoto.setMaximumSize(QSize(68, 68))
         self.infoFoto.setFrameShape(QFrame.StyledPanel)
         self.infoFoto.setFrameShadow(QFrame.Raised)
+        self.lblFoto = QLabel(self.infoFoto)
+        self.lblFoto.setObjectName(u"lblFoto")
+        self.veticalLayout_3 = QVBoxLayout(self.infoFoto)
+        self.veticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.veticalLayout_3.addWidget(self.lblFoto)
 
         self.horizontalLayout_2.addWidget(self.infoFoto)
+
 
         self.frame = QFrame(self.frame_4)
         self.frame.setObjectName(u"frame")

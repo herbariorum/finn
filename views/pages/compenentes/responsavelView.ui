@@ -37,6 +37,15 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QLabel" name="lblFoto">
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>
