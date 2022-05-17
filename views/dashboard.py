@@ -4,9 +4,11 @@ import qtawesome as qta
 from libs.uteis import Uteis
 from views.ui_dashobard import Ui_MainWindow
 
-from views.pages.matriculaPage import MatriculaPage
+from views.matricula.matriculaPage import MatriculaPage
 from views.pages.responsavelPage import ResponsavelPage
 from views.pages.homePage import HomePage
+from views.aluno.alunoPage import AlunoPage
+
 
 import sys
 
@@ -38,12 +40,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.configuraMenu()
 
         # inicializa as pages
+        self.alunoWdg = AlunoPage()
         self.homeWdg = HomePage()
         self.matWdg = MatriculaPage()
         self.respWdg = ResponsavelPage()
         self.pages.addWidget(self.homeWdg)
         self.pages.addWidget(self.matWdg)
         self.pages.addWidget(self.respWdg)
+        self.pages.addWidget(self.alunoWdg)
 
         self.pages.setCurrentIndex(0)
  
@@ -52,14 +56,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.listMenu.setMaximumWidth(250)
         self.listMenu.setSpacing(0)
         self.item = QStandardItemModel()
-        iconeMatricula = qta.icon('fa.user', color='black')
+        iconeAluno = qta.icon('ph.users-four', color='black')
+        iconeMatricula = qta.icon('fa.address-card', color='black')
         iconeResponsavel = qta.icon('ei.adult', color='black')
         iconeExit = qta.icon('mdi.exit-run', color='black')
         matricula = QStandardItem(iconeMatricula, 'Matricula')
         responsavel = QStandardItem(iconeResponsavel, 'Responsável')
+        aluno = QStandardItem(iconeAluno, 'Aluno')
         exit = QStandardItem(iconeExit, 'Sair')
         self.item.appendRow(matricula)
         self.item.appendRow(responsavel)
+        self.item.appendRow(aluno)
         self.item.appendRow(exit)
         self.listMenu.setModel(self.item)
         self.listMenu.clicked.connect(self.itemSelecionado)
@@ -75,6 +82,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.lblTopTitle.setText('Responsavel')
             self.showPageResponsavel()
         elif row == 2:
+            self.lblTopTitle.setText('Aluno')
+            self.showPageAluno()
+        elif row == 3:
             self.fechar_janela()
 
     def showPageMatricula(self):
@@ -82,6 +92,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
     def showPageResponsavel(self):
         self.pages.setCurrentIndex(2)
+
+    def showPageAluno(self):
+        self.pages.setCurrentIndex(3)
     
     def fechar_janela(self):
         info = QMessageBox.question(self, 'Confirmação', 'Você realmente deseja sair do aplicativo?', QMessageBox.Yes | QMessageBox.No,)

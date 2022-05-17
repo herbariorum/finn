@@ -1,6 +1,6 @@
 from qt_core import *
 
-from views.pages.ui_matricula import Ui_Form
+from views.matricula.ui_matricula import Ui_Form
 
 class MatriculaPage(QWidget, Ui_Form):
     def __init__(self):

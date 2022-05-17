@@ -1,9 +1,9 @@
-from database.LoginDataset import LoginDataSet
+from database.DataSet import DataSet as dataset
 from entities.User import User
 from libs.seguranca import validarPassword
 
 def validar_usuario(usuario, password):
-    localizaEmail = LoginDataSet.selectByEmail(User, usuario)
+    localizaEmail = dataset.selectByEmail(User, usuario)
    
     if not localizaEmail:
         return False

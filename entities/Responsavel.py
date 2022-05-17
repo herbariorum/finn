@@ -1,6 +1,6 @@
 from peewee import *
 from database.BaseModel import BaseModel
-from entities import Contatos, Endereco
+
 import datetime
 
 
@@ -9,7 +9,7 @@ class Responsavel(BaseModel):
     nome = CharField(max_length=80)
     photo = CharField()
     cpf = CharField(max_length=11, unique=True)
-    sexo = CharField(max_length=1)
+    sexo = CharField(max_length=11)
     email = CharField()
     tipo_responsavel = CharField()
     profissao = CharField(max_length=100)

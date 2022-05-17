@@ -1,4 +1,4 @@
-from database.ResponsavelDataSet import ResponsavelDataSet as dataset
+from database.DataSet import DataSet as dataset
 from entities.Responsavel import Responsavel
 
 

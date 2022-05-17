@@ -8,6 +8,7 @@ class CustomTableModel(QAbstractTableModel):
         QAbstractTableModel.__init__(self)
         self._items = data
         self._headers = headers
+        
 
     def update(self, dataIn):
         self._items = dataIn
