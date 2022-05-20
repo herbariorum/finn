@@ -12,5 +12,5 @@ class MCLine(Flowable):
         return "Line {}".format(self.width)
 
     def draw(self):
-        self.canv.line(10, self.height, self.width, self.height)
+        self.canv.line(0, self.height, self.width, self.height)
 

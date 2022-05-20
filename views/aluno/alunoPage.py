@@ -122,8 +122,8 @@ class AlunoPage(QWidget, Ui_Form):
                     # ('GRID', (0,0), (-1,-1), 1, 'red'),
                     ('LEFTPADDING', (0, 0), (-1, -3), 50),  
                     ('BOTTOMPADDING', (0, 0), (-1,-1), 0),   
-                    ('VALIGN', (0, 1), (-1, -1), 'TOP'), 
-                    ('ALIGNMENT', (0, 1), (-1,-1), 'CENTER')          
+                    ('VALIGN', (0, 0), (-1, -1), 'TOP'), 
+                    ('ALIGNMENT', (0, 1), (-1,-1), 'CENTER')     
                 ])
                 pdf = Canvas(save_name, pagesize=A4)
                 pdf.setTitle('Relatório')
@@ -138,7 +138,7 @@ class AlunoPage(QWidget, Ui_Form):
                 # 20 (-1, -1) Footer
                 mainTable = Table([
                     [getHeaderPage(width, heightList[0])],
-                    [getBodyPage()],
+                    [getBodyPage(row)],
                     [getFooterPage(width, heightList[2])],                
                 ],
                     colWidths= width,
@@ -216,7 +216,7 @@ class AlunoPage(QWidget, Ui_Form):
                 (
                 row.id,
                 row.nome,
-                row.cpf if row.cpf else '000.000.000-000', # if ternario
+                '{}.{}.{}-{}'.format(row.cpf[:3], row.cpf[3:6], row.cpf[6:9], row.cpf[9:]) if row.cpf else '00000000000', # if ternario
                 row.nascimento.strftime("%x"),
                 self.buscaPais(row.mae)
                 )
