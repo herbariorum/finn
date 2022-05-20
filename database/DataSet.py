@@ -18,10 +18,22 @@ class DataSet:
         except DoesNotExist:
             return False
         return usuario
+    
+    @staticmethod
+    def selectBySexo(model, valor):
+        try:            
+            usuario = model.select().where(model.sexo == valor)
+        except DoesNotExist:
+            return False
+        return usuario
         
     @staticmethod
     def search(model, texto):
         return model.select().where(model.nome.contains(texto))
+
+    @staticmethod
+    def searchBySexo(model, texto, restricao):
+        return model.select().where(model.nome.contains(texto)).where(model.sexo == restricao)
 
     @staticmethod
     def findByCpf(model, cpf):

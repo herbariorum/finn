@@ -24,6 +24,7 @@ from views.pages.reporter.table import getBodyTable
 
 from pathlib import Path
 import os
+import webbrowser
 from sys import platform
 from datetime import date
 
@@ -100,7 +101,7 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
             index = self.tblListagem.selectedIndexes()[0]        
             id = int(self.tblListagem.model().data(index))
             msg = QMessageBox.question(self, 'Apagar Registro', 'Você tem certeza que deseja apagar o registro \n de ID {}'.format(id), QMessageBox.Ok | QMessageBox.Cancel)
-            if QMessageBox.Ok:
+            if msg == QMessageBox.Ok:
                 ret = responsavelController.delete(id)
                 if ret == 1:
                     QMessageBox.about(self, 'Sucesso', 'Registro apagado com sucesso.')
@@ -189,19 +190,22 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
                 Story.append(Paragraph(ptext, styles['Justify']))
 
                 pdf_name.build(Story)
-                             
+                
+                webbrowser.open(save_name)
 
             except Exception as e:
                 QMessageBox.warning(self, 'Erro', str(e), QMessageBox.Ok)
                 return
 
     def imprimeTudo(self):
+    
         item, ok = QInputDialog.getInt(self, 'Impressão', 'Informe o número da página a ser impressa', 0, False)
-        if ok:
-            num_page = item
-        else:
-            num_page = 0
         
+        if not ok:
+            return
+            
+        num_page = item
+            
         data = date.today()
         data.strftime("%Y-%m-%d")
         doc_name = 'relatorio_' + str(data)+'_page_'+str(num_page) +'.pdf'          
@@ -221,7 +225,7 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
                 ('VALIGN', (0, 1), (-1, -1), 'TOP'),
                 ('ALIGNMENT', (0, 1), (-1,-1), 'CENTER')
             ])
-          
+
             pdf = Canvas(save_name, pagesize=A4)
             pdf.setTitle('Relatório')
             width, height = A4 #A4 = (210*mm,297*mm) w e h
@@ -248,6 +252,7 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
 
             pdf.showPage()
             pdf.save()
+            webbrowser.open(save_name)
         except Exception as e:
             QMessageBox.warning(self, 'Erro', str(e), QMessageBox.Ok)
             return

@@ -33,8 +33,9 @@ class ResponsavelDialog(QDialog):
             
     def upload_foto(self, event):
         fname = QFileDialog.getOpenFileName(self, 'Open file', QDir.currentPath(), "*.png")
-        self.exibe_foto(fname[0])
-        self.foto_name = fname[0]
+        if not len(fname[0]) == 0:
+            self.exibe_foto(fname[0])
+            self.foto_name = fname[0]
         
             
     def saveImage(self, filename):
@@ -129,6 +130,8 @@ class ResponsavelDialog(QDialog):
                 return
         else:                     
             values['id'] = id
+            # adicionar a data atual
+            values['atualizadoem'] = datetime.today().date()
             if self.foto_name:
                 values['photo'] = 'static/uploads/'+self.pega_nome_foto(self.foto_name)
             r = responsavelController.update(values) # retorna um int ou um erro (ValueErro)
@@ -140,6 +143,8 @@ class ResponsavelDialog(QDialog):
                 QMessageBox.about(self, 'Sucesso', 'Registro atualizado com sucesso.')
         self.accept()
     
+    
+
     def preencheForm(self):
         row = responsavelController.selectById(self.IdToEdit)           
         if row.photo:

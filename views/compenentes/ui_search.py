@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'formCbiyGd.ui'
+## Form generated from reading UI file 'searchdoRuhY.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.4
 ##
@@ -16,28 +16,32 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialog, QDialogButtonBox,
-    QFrame, QLineEdit, QSizePolicy, QVBoxLayout,
-    QWidget)
+    QFrame, QHBoxLayout, QLabel, QLineEdit,
+    QListView, QSizePolicy, QVBoxLayout, QWidget)
 
-from views.compenentes.CLabelEdit import CLabelEdit
-
-
-class Ui_Dialog(object):
+class Ui_Search(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(663, 443)        
-        
+        Dialog.resize(557, 327)
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.frame = QFrame(Dialog)
         self.frame.setObjectName(u"frame")
-        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShape(QFrame.NoFrame)
         self.frame.setFrameShadow(QFrame.Raised)
-        
-        self.lineEdit = CLabelEdit(self.frame)
-        self.lineEdit.setObjectName(u"lineEdit")
-        self.lineEdit.setGeometry(QRect(10, 10, 481, 48))
+        self.horizontalLayout = QHBoxLayout(self.frame)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.label = QLabel(self.frame)
+        self.label.setObjectName(u"label")
+
+        self.horizontalLayout.addWidget(self.label)
+
+        self.edtLocalizar = QLineEdit(self.frame)
+        self.edtLocalizar.setObjectName(u"edtLocalizar")
+
+        self.horizontalLayout.addWidget(self.edtLocalizar)
+
 
         self.verticalLayout.addWidget(self.frame)
 
@@ -45,6 +49,13 @@ class Ui_Dialog(object):
         self.frame_2.setObjectName(u"frame_2")
         self.frame_2.setFrameShape(QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_2 = QVBoxLayout(self.frame_2)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.listagem = QListView(self.frame_2)
+        self.listagem.setObjectName(u"listagem")
+
+        self.verticalLayout_2.addWidget(self.listagem)
+
 
         self.verticalLayout.addWidget(self.frame_2)
 
@@ -65,5 +76,6 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
+        self.label.setText(QCoreApplication.translate("Dialog", u"Localizar", None))
     # retranslateUi
 

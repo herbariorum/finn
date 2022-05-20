@@ -9,8 +9,14 @@ def selectAll():
 def selectById(id):
     return dataset.selectById(Responsavel, id)
 
+def selectBySexo(valor):
+    return dataset.selectBySexo(Responsavel, valor)
+
 def search(texto):
     return dataset.search(Responsavel, texto)
+
+def searchBySexo(texto, restricao):
+    return dataset().searchBySexo(Responsavel, texto, restricao)
 
 def verificaCPFExiste(cpf):
     return dataset.findByCpf(Responsavel, cpf)

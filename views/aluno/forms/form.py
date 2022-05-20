@@ -1,12 +1,18 @@
 from qt_core import *
 import qtawesome as qta
 import os 
+from datetime import datetime
 
 from views.compenentes.CLabelEdit import CLabelEdit
 from views.compenentes.CComboBox import CComboBox
-import controller.AlunoController as alunoController
+from views.compenentes.CSearch import Form as FormularioDeBusca
+
+import controller.AlunoController as alunoController    # pega os dados dos alunos
+import controller.ResponsavelController as responsavelController # para pegar o nome dos pais
 
 from pyUFbr.baseuf import ufbr
+from pycpfcnpj import cpf
+from libs.uteis import Uteis
 
 class Form(QDialog):
 
@@ -14,6 +20,9 @@ class Form(QDialog):
         super().__init__()
         
         self.rowID = id
+        self.rowIDPai = None
+        self.rowIDMae = None
+        self.foto_name = None
 
         self.setWindowTitle(u'Edita/Insere')
         self.setStyleSheet("background-color: #ffffff;")
@@ -45,8 +54,8 @@ class Form(QDialog):
         self.labelFoto = QLabel(self.frameFoto)
         iconFoto = qta.icon("fa.camera")  
         self.labelFoto.setPixmap(iconFoto.pixmap(QSize(64, 64)))
-
         self.labelFoto.setFixedSize(QSize(70, 70))
+        self.labelFoto.mousePressEvent = self.upload_foto
         self.hLayout_foto.addWidget(self.labelFoto)
 
         self.hLayout_01.addWidget(self.frameFoto)
@@ -124,36 +133,44 @@ class Form(QDialog):
         self.lineEditPai.setObjectName(u"nome_pai")
         self.lineEditPai.setFixedHeight(48)
         self.lineEditPai.setLabelText("Nome do Pai")
+        self.lineEditPai.setEnabled(False)
         # self.lineEditPai.setFixedWidth(200)
         self.hLayout_03.addWidget(self.lineEditPai)
 
         self.button_Busca_Pai = QPushButton(self.frame_3)
+        self.button_Busca_Pai.setObjectName(u"btnPai")
         self.button_Busca_Pai.setIcon(qta.icon("fa.ellipsis-h", color="black"))
         self.button_Busca_Pai.setFixedSize(QSize(32, 32))
         self.button_Busca_Pai.setStyleSheet(
             """
-            background-color: green;            
+            #btnPai {background-color: green;   }  
+            QToolTip { color: #ffffff; background-color: #000000; border: 0px; }       
             """
         )
-        self.button_Busca_Pai.setToolTip("Pesquisa por nome do pai")
+        self.button_Busca_Pai.setToolTip("Localizar pai")
+        self.button_Busca_Pai.clicked.connect(self.pegar_nome_pai)
         self.hLayout_03.addWidget(self.button_Busca_Pai)
 
         self.lineEditMae = CLabelEdit(self.frame_3)
         self.lineEditMae.setObjectName(u"nome_mae")
         self.lineEditMae.setFixedHeight(48)
         self.lineEditMae.setLabelText("Nome da Mâe")
+        self.lineEditMae.setEnabled(False)
         # self.lineEditOrgaoExp.setFixedWidth(200)
         self.hLayout_03.addWidget(self.lineEditMae)
 
         self.button_Busca_Mae = QPushButton(self.frame_3)
+        self.button_Busca_Mae.setObjectName(u"btnMae")
         self.button_Busca_Mae.setIcon(qta.icon("fa.ellipsis-h", color="black"))
         self.button_Busca_Mae.setFixedSize(QSize(32, 32))
         self.button_Busca_Mae.setStyleSheet(
             """
-            background-color: green;            
+            #btnMae {background-color: green;  }  
+            QToolTip { color: #ffffff; background-color: #000000; border: 0px; }          
             """
         )
-        self.button_Busca_Mae.setToolTip("Pesquisa por nome da Mâe")
+        self.button_Busca_Mae.setToolTip("Localiza mãe")
+        self.button_Busca_Mae.clicked.connect(self.pegar_nome_mae)
         self.hLayout_03.addWidget(self.button_Busca_Mae)
 
         self.verticalLayout_1.addWidget(self.frame_3)
@@ -199,7 +216,7 @@ class Form(QDialog):
         self.buttonBox.setOrientation(Qt.Horizontal)
         self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
 
-        self.buttonBox.accepted.connect(self.accept)
+        self.buttonBox.accepted.connect(self.verificarRegistros)
         self.buttonBox.rejected.connect(self.reject)
 
         self.verticalLayout_1.addWidget(self.buttonBox)
@@ -213,31 +230,174 @@ class Form(QDialog):
             return
 
     def newForm(self):
-        pass
+        self.foto_name = None
+        self.lineEditNome.setText('')
+        self.lineEditCPF.setText('')
+        self.lineEditRG.setText('')
+       
+        self.lineEditNascimento.setText('')
+        self.cbxSexo.setText('')
+        self.lineEditOrgaoExp.setText('')
+        self.cbxUF_Exp.setText('')
+
+        self.lineEditPai.setText('')
+        self.lineEditMae.setText('')
+
+        self.lineEditEndereco.setText('')
+        self.lineEditBairro.setText('')
+        self.cbxEstado.setText('')
+        self.cbxCidade.setText('')
 
     def preencheForm(self):
         row = alunoController.selectById(self.rowID)
         if row.photo:
-            path_base = os.getcwd()        
-            foto = os.path.join(path_base+'/' , row.photo)        
+            path_base = os.getcwd()                 
+            foto = os.path.join(path_base+'/' , row.photo.decode('UTF-8'))  
+            self.foto_name = foto      
             self.exibe_foto(foto)
         self.lineEditNome.setText(row.nome)
         self.lineEditCPF.setText(row.cpf)
         self.lineEditRG.setText(row.rg)
-       
+    
         self.lineEditNascimento.setText(row.nascimento.strftime("%d/%m/%Y"))
         self.cbxSexo.setText(row.sexo)
         self.lineEditOrgaoExp.setText(row.orgao_exp_rg)
         self.cbxUF_Exp.setText(row.uf_exp_rg)
-        self.lineEditMae.setText(str(row.mae))
-        self.lineEditPai.setText(str(row.pai))
+        pai = self.buscaPais(row.pai)
+        self.rowIDPai = row.pai
+        self.lineEditPai.setText(pai)
+        mae = self.buscaPais(row.mae)
+        self.rowIDMae = row.mae
+        self.lineEditMae.setText(mae)
+
         self.lineEditEndereco.setText(row.endereco)
         self.lineEditBairro.setText(row.bairro)
         self.cbxEstado.setText(row.uf)
         self.cbxCidade.setText(row.cidade)
 
-    
+    def upload_foto(self, event):
+        fname = QFileDialog.getOpenFileName(self, 'Open file', QDir.currentPath(), "*.png")
+        
+        if not len(fname[0]) == 0:
+            self.exibe_foto(fname[0])
+            self.foto_name = fname[0]     
+
     def exibe_foto(self, fname):        
         if fname:                       
             self.foto_icon = QIcon(fname)
             self.labelFoto.setPixmap(self.foto_icon.pixmap(QSize(64, 64)))
+
+    def saveImage(self, filename):
+        file = QFile(filename)
+        if not file.open(QIODevice.ReadOnly):
+            return
+        name = self.pega_nome_foto(filename)
+                
+        image = QImage()
+        image.load(filename,"PNG")
+        image.save('static/uploads/'+name, "PNG", -1)
+    
+    def pega_nome_foto(self, filename):
+        file = QFile(filename)
+        if not file.open(QIODevice.ReadOnly):
+            return
+        name = QFileInfo(filename).fileName()
+        return name
+
+    def buscaPais(self, id):
+        row = responsavelController.selectById(id)
+        return row.nome
+
+    def pegar_nome_pai(self):
+        # retorna o id e nome do pai
+        colunas = ['ID', 'NOME', 'CPF']
+        dlg = FormularioDeBusca(responsavelController, colunas,'MASCULINO')
+        ret = dlg.exec()
+        if ret == 1:
+            # print(dlg.rowID, dlg.rowValue)
+            self.lineEditPai.setText(dlg.rowValue)
+            self.rowIDPai = dlg.rowID
+    
+
+    def pegar_nome_mae(self):
+        # retorna o id e nome da mae
+        colunas = ['ID', 'NOME', 'CPF']
+        dlg = FormularioDeBusca(responsavelController, colunas,  'FEMININO')
+        ret = dlg.exec()
+        if ret == 1:
+            self.lineEditMae.setText(dlg.rowValue)
+            self.rowIDMae = dlg.rowID
+
+
+    def verificarRegistros(self):      
+        nome = self.lineEditNome.text()
+        ccpf = Uteis.is_only_number(self.lineEditCPF.text())
+        rg = Uteis.is_only_number(self.lineEditRG.text())
+        orgao_exp_rg = self.lineEditOrgaoExp.text()
+        uf_exp_rg = self.cbxUF_Exp.getText()
+        nascimento = datetime.strptime(self.lineEditNascimento.text(), '%d/%m/%Y').date()
+        sexo = self.cbxSexo.getText()
+        pai = self.rowIDPai
+        mae = self.rowIDMae
+        endereco = self.lineEditEndereco.text()
+        cidade = self.cbxCidade.getText()
+        bairro = self.lineEditBairro.text()
+        uf = self.cbxEstado.getText()
+
+        checkCpfValido = cpf.validate(ccpf) 
+
+        if not checkCpfValido:
+            QMessageBox.about(self, 'Aviso', 'Digite um CPF válido')
+            return 
+
+        values = {}
+        values['nome'] = nome
+        values['cpf'] = ccpf
+        values['rg'] = rg if rg else '0000000'
+        values['orgao_exp_rg'] = orgao_exp_rg
+        values['uf_exp_rg'] = uf_exp_rg
+        values['nascimento'] = nascimento
+        values['sexo'] = sexo
+        values['pai'] = pai if pai else 0
+        values['mae'] = mae if mae else 1
+        values['endereco'] = endereco
+        values['cidade'] = cidade 
+        values['bairro'] = bairro
+        values['uf'] = uf
+                
+        if not self.rowID:
+            # novo registro
+            retorno = alunoController.verificaCPFExiste(ccpf)
+            if not retorno:
+                if self.foto_name:
+                    values['photo'] = 'static/uploads/'+self.pega_nome_foto(self.foto_name)    
+                else:
+                    values['photo'] = 'static/uploads/sample.jpg'            
+                r = alunoController.insert(values) # retorna int ou erro                
+                if type(r) == ValueError or type(r) == TypeError:
+                    QMessageBox.warning(self, 'Erro', str(r), QMessageBox.Ok)
+                    return
+                else:
+                    self.saveImage(self.foto_name)
+                    QMessageBox.about(self, 'Sucesso', 'Registro criado com sucesso.')  
+            else:
+                QMessageBox.about(self, 'Aviso', 'O CPF já está cadastro na base de dados.')
+                return
+            
+        else:
+            # atualiza registro
+            values['atualizadoem'] = datetime.today().date()
+            values['id'] = self.rowID
+            
+            if self.foto_name:
+                values['photo'] = 'static/uploads/'+self.pega_nome_foto(self.foto_name)
+            else:
+                values['photo'] = 'static/uploads/sample.jpg'
+            r = alunoController.update(values) # retorna um int ou um erro (ValueErro)
+            if type(r) == ValueError or type(r) == TypeError:
+                QMessageBox.warning(self, 'Erro', str(r), QMessageBox.Ok)
+                return
+            else:
+                self.saveImage(self.foto_name)
+                QMessageBox.about(self, 'Sucesso', 'Registro atualizado com sucesso.')
+        self.accept()
