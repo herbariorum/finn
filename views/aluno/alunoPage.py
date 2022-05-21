@@ -102,7 +102,7 @@ class AlunoPage(QWidget, Ui_Form):
             else:
                 return 
 
-    def imprimeSelecao(self, id):
+    def imprimeSelecao(self):
         indexes = self.tblListagem.selectionModel().selectedRows()
         if not indexes:
             QMessageBox.about(self, 'Aviso', 'Selecione o item a ser impresso')
@@ -202,7 +202,8 @@ class AlunoPage(QWidget, Ui_Form):
             return
 
     def exibeItem(self):
-        pass
+        print('imprimindo')
+        self.imprimeSelecao()
     
     def buscaPais(self, id):
         row = responsavelController.selectById(id)

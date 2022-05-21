@@ -1,6 +1,6 @@
 from qt_core import *
 
-from views.pages.ui_home import Ui_Form
+from views.home.ui_home import Ui_Form
 
 class HomePage(QWidget, Ui_Form):
     def __init__(self):

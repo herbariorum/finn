@@ -2,12 +2,12 @@ from qt_core import *
 
 import qtawesome as qta
 
-from views.pages.ui_responsavel import Ui_formResponsavel
+from views.responsavel.ui_responsavel import Ui_formResponsavel
 from modelos.CustomTableModel import CustomTableModel
 import controller.ResponsavelController as responsavelController
 
-from views.pages.compenentes.formResponsavel import ResponsavelDialog
-from views.pages.compenentes.viewResponsavel import ViewResponsavelDialog
+from views.responsavel.forms.formResponsavel import ResponsavelDialog
+from views.responsavel.forms.viewResponsavel import ViewResponsavelDialog
 
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
@@ -17,9 +17,9 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.lib import colors
 
-from views.pages.reporter.header import getHeaderTable
-from views.pages.reporter.footer import getFooterPage
-from views.pages.reporter.table import getBodyTable
+from views.responsavel.reporter.header import getHeaderTable
+from views.responsavel.reporter.footer import getFooterPage
+from views.responsavel.reporter.table import getBodyTable
 
 
 from pathlib import Path
@@ -59,10 +59,7 @@ class ResponsavelPage(QWidget, Ui_formResponsavel):
 
 
     def exibeItem(self):
-        index = self.tblListagem.selectedIndexes()[0]  
-        id = int(self.tblListagem.model().data(index)) 
-        dlg = ViewResponsavelDialog(id)
-        dlg.exec()        
+        self.imprimeSelecao()    
 
     def openEditTable(self):  
         indexes = self.tblListagem.selectionModel().selectedRows()

@@ -7,7 +7,7 @@ class CComboBox(QWidget):
         
         self.mainLayout = QVBoxLayout(self)   
         self.mainLayout.setContentsMargins(0, 0, 0, 0)
-              
+        
         self.label = QLabel(self)    
         
         self.combo = QComboBox(self)

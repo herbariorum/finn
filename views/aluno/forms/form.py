@@ -2,6 +2,7 @@ from qt_core import *
 import qtawesome as qta
 import os 
 from datetime import datetime
+import json
 
 from views.compenentes.CLabelEdit import CLabelEdit
 from views.compenentes.CComboBox import CComboBox
@@ -13,6 +14,8 @@ import controller.ResponsavelController as responsavelController # para pegar o 
 from pyUFbr.baseuf import ufbr
 from pycpfcnpj import cpf
 from libs.uteis import Uteis
+
+base_dir = QDir.currentPath()
 
 class Form(QDialog):
 
@@ -26,7 +29,7 @@ class Form(QDialog):
 
         self.setWindowTitle(u'Edita/Insere')
         self.setStyleSheet("background-color: #ffffff;")
-        self.resize(663, 443)       
+        self.resize(663, 543)       
 
         self.initGui()
         
@@ -65,66 +68,130 @@ class Form(QDialog):
         self.lineEditNome.setObjectName(u"nome_txt")
         self.lineEditNome.setFixedHeight(48)
         self.lineEditNome.setLabelText("Nome")
-        # self.lineEditNome.setText("Elias")
         self.hLayout_01.addWidget(self.lineEditNome)
-        # insere o edit na linha
 
-        
-        self.verticalLayout_1.addWidget(self.frame_1)
-       
-        self.frame_2 = QFrame(self)
-
-        self.hLayout_02 = QHBoxLayout(self.frame_2)
-
-        self.lineEditCPF = CLabelEdit(self.frame_2)
+        self.lineEditCPF = CLabelEdit(self.frame_1)
         self.lineEditCPF.setObjectName(u"cpf_txt")
         self.lineEditCPF.setFixedHeight(48)
-        self.lineEditCPF.label.setText("CPF")
+        self.lineEditCPF.setFixedWidth(150)
+        self.lineEditCPF.setLabelText('CPF')
         self.lineEditCPF.lineEdit.setInputMask("000.000.000-00")
         # self.lineEditCPF.setFixedWidth(150)
-        self.hLayout_02.addWidget(self.lineEditCPF)
+        self.hLayout_01.addWidget(self.lineEditCPF)
+    
+        self.verticalLayout_1.addWidget(self.frame_1)
+    
+        self.frame_2 = QFrame(self)
+        self.hLayout_02 = QHBoxLayout(self.frame_2)
 
         self.lineEditNascimento = CLabelEdit(self.frame_2)
         self.lineEditNascimento.setObjectName(u"nascimento_txt")
         self.lineEditNascimento.setFixedHeight(48)
-        self.lineEditNascimento.label.setText("Data Nascimento")
+        self.lineEditNascimento.setLabelText("Data Nascimento")
         self.lineEditNascimento.lineEdit.setInputMask("00/00/0000")
-        # self.lineEditNascimento.setFixedWidth(110)
         self.hLayout_02.addWidget(self.lineEditNascimento)        
- 
+
         self.cbxSexo = CComboBox(self.frame_2)
         self.cbxSexo.setLabelText(u"Sexo")
         self.cbxSexo.setItems(["Selecione", "MASCULINO", "FEMININO"])
         self.cbxSexo.setFixedHeight(48)
         self.hLayout_02.addWidget(self.cbxSexo)
 
-        self.verticalLayout_1.addWidget(self.frame_2)
-
-        self.frame_3_ = QFrame(self)
-        self.hLayout_03_ = QHBoxLayout(self.frame_3_)
-
-        self.lineEditRG = CLabelEdit(self.frame_3_)
+        #identidade, orgao e uf
+        self.lineEditRG = CLabelEdit(self.frame_2)
         self.lineEditRG.setObjectName(u"rg_txt")
         self.lineEditRG.setFixedHeight(48)
-        self.lineEditRG.label.setText("Identidade")
-        self.lineEditRG.setFixedWidth(120)
-        self.hLayout_03_.addWidget(self.lineEditRG)
+        self.lineEditRG.setLabelText("Identidade")
+        # self.lineEditRG.setFixedWidth(120)
+        self.hLayout_02.addWidget(self.lineEditRG)
 
-        self.lineEditOrgaoExp = CLabelEdit(self.frame_3_)
+        self.lineEditOrgaoExp = CLabelEdit(self.frame_2)
         self.lineEditOrgaoExp.setObjectName(u"orgao_exp_txt")
         self.lineEditOrgaoExp.setFixedHeight(48)
         self.lineEditOrgaoExp.setLabelText("Órgão Expedidor")
-        self.lineEditOrgaoExp.setFixedWidth(200)
-        self.hLayout_03_.addWidget(self.lineEditOrgaoExp)
+        # self.lineEditOrgaoExp.setFixedWidth(200)
+        self.hLayout_02.addWidget(self.lineEditOrgaoExp)
 
-        self.cbxUF_Exp = CComboBox(self.frame_3_)
+        self.cbxUF_Exp = CComboBox(self.frame_2)
         self.cbxUF_Exp.setLabelText(u"UF")
         self.cbxUF_Exp.setItems(ufbr.list_uf)
         self.cbxUF_Exp.setFixedHeight(48)
-        self.hLayout_03_.addWidget(self.cbxUF_Exp)
+        self.hLayout_02.addWidget(self.cbxUF_Exp)
 
-        self.verticalLayout_1.addWidget(self.frame_3_)
+        self.verticalLayout_1.addWidget(self.frame_2)
 
+        
+        # dados da naturalidade e nacionalidade       
+        self.frame_nat = QFrame(self)
+        self.hLayout_nat = QHBoxLayout(self.frame_nat)
+
+        self.uf_naturalidade = CComboBox(self.frame_nat)
+        self.uf_naturalidade.setLabelText(u"UF")
+        self.uf_naturalidade.setItems(ufbr.list_uf)
+        self.uf_naturalidade.setFixedHeight(48)
+        self.uf_naturalidade.combo.currentTextChanged.connect(self.on_cidade_naturalidade_changed)
+        self.hLayout_nat.addWidget(self.uf_naturalidade)
+
+        self.naturalidade = CComboBox(self.frame_nat)
+        self.naturalidade.setLabelText(u"Naturalidade")
+        self.naturalidade.setFixedHeight(48)  
+           
+        self.hLayout_nat.addWidget(self.naturalidade)
+        
+        self.nacionalidade = CComboBox(self.frame_nat)
+        self.nacionalidade.setLabelText(u"Naturalidade")
+        self.naturalidade.setFixedHeight(48)        
+        self.hLayout_nat.addWidget(self.nacionalidade)
+
+        self.verticalLayout_1.addWidget(self.frame_nat)
+
+        # dados da certidao de nascimento
+        # certidao_nascimento, termo_certidao_nasc, folha_certidao_nasc
+        # livro_certidao_nasc , data_emissao_certidao, cartorio_certidao
+        self.frame_certidao = QFrame(self)
+        self.hLayout_certidao = QHBoxLayout(self.frame_certidao)
+
+        self.certidao = CLabelEdit(self.frame_certidao)
+        self.certidao.setFixedHeight(48)
+        self.certidao.setLabelText('Certidão de Nascimento')
+        self.hLayout_certidao.addWidget(self.certidao)
+
+        self.termo_certidao = CLabelEdit(self.frame_certidao)
+        self.termo_certidao.setFixedHeight(48)
+        self.termo_certidao.setLabelText('Termo')
+        self.hLayout_certidao.addWidget(self.termo_certidao)
+
+        self.folha_certidao = CLabelEdit(self.frame_certidao)
+        self.folha_certidao.setFixedHeight(48)
+        self.folha_certidao.setLabelText('Folha')
+        self.hLayout_certidao.addWidget(self.folha_certidao)
+
+        self.livro_certidao = CLabelEdit(self.frame_certidao)
+        self.livro_certidao.setFixedHeight(48)
+        self.livro_certidao.setLabelText('Livro')
+        self.hLayout_certidao.addWidget(self.livro_certidao)
+
+        self.verticalLayout_1.addWidget(self.frame_certidao)
+        
+        # data_emissao_certidao, cartorio_certidao
+        self.frame_cartorio = QFrame(self)
+        self.hLayout_cartorio = QHBoxLayout(self.frame_cartorio)
+
+        self.cartorio = CLabelEdit(self.frame_cartorio)
+        self.cartorio.setFixedHeight(48)
+        self.cartorio.setLabelText("Cartório de emissão")
+        self.hLayout_cartorio.addWidget(self.cartorio)
+
+        self.emissao_certidao = CLabelEdit(self.frame_cartorio)
+        self.emissao_certidao.setFixedHeight(48)
+        self.emissao_certidao.setFixedWidth(120)
+        self.emissao_certidao.setLabelText("Data Certidão")
+        self.emissao_certidao.lineEdit.setInputMask('00/00/0000')
+        self.hLayout_cartorio.addWidget(self.emissao_certidao)
+
+        self.verticalLayout_1.addWidget(self.frame_cartorio)
+
+        # informa os pais ou responsável do aluno
         self.frame_3 = QFrame(self)
 
         self.hLayout_03 = QHBoxLayout(self.frame_3)
@@ -132,7 +199,7 @@ class Form(QDialog):
         self.lineEditPai = CLabelEdit(self.frame_3)
         self.lineEditPai.setObjectName(u"nome_pai")
         self.lineEditPai.setFixedHeight(48)
-        self.lineEditPai.setLabelText("Nome do Pai")
+        self.lineEditPai.setLabelText("Nome do Pai/Responsável")
         self.lineEditPai.setEnabled(False)
         # self.lineEditPai.setFixedWidth(200)
         self.hLayout_03.addWidget(self.lineEditPai)
@@ -154,7 +221,7 @@ class Form(QDialog):
         self.lineEditMae = CLabelEdit(self.frame_3)
         self.lineEditMae.setObjectName(u"nome_mae")
         self.lineEditMae.setFixedHeight(48)
-        self.lineEditMae.setLabelText("Nome da Mâe")
+        self.lineEditMae.setLabelText("Nome da Mâe/Responsável")
         self.lineEditMae.setEnabled(False)
         # self.lineEditOrgaoExp.setFixedWidth(200)
         self.hLayout_03.addWidget(self.lineEditMae)
@@ -199,7 +266,7 @@ class Form(QDialog):
         self.cbxCidade = CComboBox(self.frame_5)
         self.cbxCidade.setLabelText("Cidade")
         self.cbxCidade.setFixedHeight(48)
-        self.cbxCidade.setItems(["Selecione", "Augustinópolis"])
+        # self.cbxCidade.setItems(["Selecione", "Augustinópolis"])
         self.hLayout_05.addWidget(self.cbxCidade)
 
         self.lineEditBairro = CLabelEdit(self.frame_4)
@@ -221,6 +288,24 @@ class Form(QDialog):
 
         self.verticalLayout_1.addWidget(self.buttonBox)
 
+    def preence_cbx_naturalidade(self):
+        self.nacionalidade.combo.clear()
+        lista = []
+        with open(base_dir +'/static/json/ListaPaises.json') as paises:
+            data = json.load(paises)            
+            for i in range(len(data)):
+                lista.append(data[i]['nome'])
+                
+        self.nacionalidade.setItems(lista)
+        self.nacionalidade.setText('Brasil')
+
+    def on_cidade_naturalidade_changed(self):
+        estado = self.uf_naturalidade.getText()
+        if estado:
+            self.naturalidade.combo.clear()
+            self.naturalidade.setItems(ufbr.list_cidades(estado))
+        
+
     def on_combo_estado_changed(self):
         estado = self.cbxEstado.getText()
         if estado:
@@ -233,19 +318,32 @@ class Form(QDialog):
         self.foto_name = None
         self.lineEditNome.setText('')
         self.lineEditCPF.setText('')
-        self.lineEditRG.setText('')
-       
+
         self.lineEditNascimento.setText('')
-        self.cbxSexo.setText('')
+        self.cbxSexo.setText('MASCULINO')
+        self.lineEditRG.setText('')
         self.lineEditOrgaoExp.setText('')
-        self.cbxUF_Exp.setText('')
+        self.cbxUF_Exp.setText('TO')        
+
+        self.preence_cbx_naturalidade()  
+        self.uf_naturalidade.setText('TO')
+        # self.naturalidade.setText('')
+        self.nacionalidade.setText('Brasil')
+
+        self.certidao.setText('')
+        self.termo_certidao.setText('') 
+        self.folha_certidao.setText('')
+        self.livro_certidao.setText('')
+        
+        self.cartorio.setText('')  
+        self.emissao_certidao.setText('')
 
         self.lineEditPai.setText('')
         self.lineEditMae.setText('')
 
         self.lineEditEndereco.setText('')
         self.lineEditBairro.setText('')
-        self.cbxEstado.setText('')
+        self.cbxEstado.setText('TO')
         self.cbxCidade.setText('')
 
     def preencheForm(self):
@@ -258,11 +356,24 @@ class Form(QDialog):
         self.lineEditNome.setText(row.nome)
         self.lineEditCPF.setText(row.cpf)
         self.lineEditRG.setText(row.rg)
-    
-        self.lineEditNascimento.setText(row.nascimento.strftime("%d/%m/%Y"))
-        self.cbxSexo.setText(row.sexo)
+        self.cbxSexo.setText(row.sexo)    
+        self.lineEditNascimento.setText(row.nascimento.strftime("%d/%m/%Y")) 
         self.lineEditOrgaoExp.setText(row.orgao_exp_rg)
         self.cbxUF_Exp.setText(row.uf_exp_rg)
+
+        self.preence_cbx_naturalidade()  
+        self.uf_naturalidade.setText(row.uf_naturalidade)
+        self.naturalidade.setText(row.naturalidade)
+        self.nacionalidade.setText(row.nacionalidade)
+
+        self.certidao.setText(row.certidao_nascimento)
+        self.termo_certidao.setText(row.termo_certidao_nasc)
+        self.folha_certidao.setText(row.folha_certidao_nasc)
+        self.livro_certidao.setText(row.livro_certidao_nasc)
+
+        self.cartorio.setText(row.cartorio_certidao)
+        self.emissao_certidao.setText(row.data_emissao_certidao)
+
         pai = self.buscaPais(row.pai)
         self.rowIDPai = row.pai
         self.lineEditPai.setText(pai)
@@ -344,6 +455,16 @@ class Form(QDialog):
         bairro = self.lineEditBairro.text()
         uf = self.cbxEstado.getText()
 
+        uf_naturalidade = self.uf_naturalidade.getText()
+        naturalidade = self.naturalidade.getText()
+        nacionalidade = self.nacionalidade.getText()
+        certidao_nascimento = self.certidao.text()
+        termo_certidao = self.termo_certidao.text()
+        folha_certidao = self.folha_certidao.text()
+        livro_certidao = self.livro_certidao.text()
+        data_emissao_certidao = self.emissao_certidao.text()
+        cartorio = self.cartorio.text()
+
         checkCpfValido = cpf.validate(ccpf) 
 
         if not checkCpfValido:
@@ -364,6 +485,15 @@ class Form(QDialog):
         values['cidade'] = cidade 
         values['bairro'] = bairro
         values['uf'] = uf
+        values['uf_naturalidade'] = uf_naturalidade
+        values['naturalidade'] = naturalidade
+        values['nacionalidade'] = nacionalidade
+        values['certidao_nascimento'] = certidao_nascimento
+        values['termo_certidao_nasc'] = termo_certidao
+        values['folha_certidao_nasc'] = folha_certidao
+        values['livro_certidao_nasc'] = livro_certidao
+        values['data_emissao_certidao'] = data_emissao_certidao
+        values['cartorio_certidao'] = cartorio
                 
         if not self.rowID:
             # novo registro

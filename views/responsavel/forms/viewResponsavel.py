@@ -1,7 +1,7 @@
 from qt_core import *
 
 import controller.ResponsavelController as responsavelController
-from views.pages.compenentes.ui_responsavelView import Ui_Dialog
+from views.responsavel.forms.ui_responsavelView import Ui_Dialog
 import os
 
 class ViewResponsavelDialog(QDialog):
@@ -71,7 +71,7 @@ class ViewResponsavelDialog(QDialog):
         if row.photo:
             path_base = os.getcwd()        
             foto = os.path.join(path_base+'/' , row.photo)        
-           
+        
             self.foto_icon = QIcon(foto)
             self.ui.lblFoto.setPixmap(self.foto_icon.pixmap(QSize(64, 64)))
         self.ui.infoNome.setText(row.nome)

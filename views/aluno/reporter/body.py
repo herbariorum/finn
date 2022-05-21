@@ -29,7 +29,11 @@ def getBodyPage(row):
                 ) 
 
     Story.append(Spacer(1, 15))
-    titulo = '<b>FICHA DO ALUNO</b>'
+    if row.sexo == 'MASCULINO':
+        titulo = '<b>DADOS PESSOAIS DO ALUNO</b>'
+    else:
+        titulo = '<b>DADOS PESSOAIS DA ALUNA</b>'
+
     Story.append(Paragraph(titulo, headstyle))
     Story.append(Spacer(1, 15))
     Story.append(MCLine(500))

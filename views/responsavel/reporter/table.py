@@ -4,8 +4,8 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER
 from reportlab.pdfgen import canvas
-from views.pages.compenentes.linha import MCLine
-from reportlab.lib.units import inch
+
+from views.compenentes.linha import MCLine
 
 def getBodyTable(page, widht, height=0): # página tera 24 linhas
 

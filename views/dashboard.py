@@ -5,8 +5,8 @@ from libs.uteis import Uteis
 from views.ui_dashobard import Ui_MainWindow
 
 from views.matricula.matriculaPage import MatriculaPage
-from views.pages.responsavelPage import ResponsavelPage
-from views.pages.homePage import HomePage
+from views.responsavel.responsavelPage import ResponsavelPage
+from views.home.homePage import HomePage
 from views.aluno.alunoPage import AlunoPage
 
 

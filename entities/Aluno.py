@@ -18,6 +18,17 @@ class Aluno(BaseModel):
     bairro = CharField(80)
     cidade = CharField(80)
     uf = CharField(2)
+
+    uf_naturalidade = CharField(2)
+    naturalidade = CharField()
+    nacionalidade = CharField()
+    certidao_nascimento = CharField()
+    termo_certidao_nasc = CharField()
+    folha_certidao_nasc = CharField()
+    livro_certidao_nasc = CharField()
+    data_emissao_certidao = DateField()
+    cartorio_certidao = CharField()
+
     photo = BlobField()
     criadoem = DateField(default=datetime.date.today())
     atualizadoem = DateField()

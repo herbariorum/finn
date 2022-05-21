@@ -1,7 +1,7 @@
 from qt_core import *
 
 import controller.ResponsavelController as responsavelController
-from views.pages.compenentes.ui_responsalvelEditor import Ui_Dialog
+from views.responsavel.forms.ui_responsalvelEditor import Ui_Dialog
 
 from libs.uteis import Uteis
 from pycpfcnpj import cpf
